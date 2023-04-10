@@ -9,29 +9,41 @@ test_font =  pygame.font.Font('font/Pixeltype.ttf', 50)
 
 sky_surface = pygame.image.load('src/Sky.png').convert()
 ground_surface =  pygame.image.load('src/ground.png').convert()
-text_surface = test_font.render("Corre BERGE", False, 'black')
 
-snail_surface = pygame.image.load('src/snail/snail1.png').convert_alpha()
-snail_rect = snail_surface.get_rect(midbottom = (600,300))
+text_surf = test_font.render("Corre BERGE", False, (64,64,64))
+text_rect = text_surf.get_rect(center = (400,50))
+
+snail_surf = pygame.image.load('src/snail/snail1.png').convert_alpha()
+snail_rect = snail_surf.get_rect(midbottom = (600,300))
 
 player_surf = pygame.image.load('src/Player/player_walk_1.png').convert_alpha()
 player_rect = player_surf.get_rect(midbottom = (80,300))
 
 while True:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT: 
             pygame.quit()
             exit()
-    
+        #if event.type == pygame.MOUSEMOTION:
+        #    if player_rect.collidepoint(event.pos):
     #bringing the surface to the screen
     screen.blit(sky_surface,(0,0)) 
     screen.blit(ground_surface,(0,300))
-    screen.blit(text_surface,(300,10))
+    pygame.draw.rect(screen, '#c0e8eC', text_rect)
+    pygame.draw.rect(screen, '#c0e8eC', text_rect, 10)
+    screen.blit(text_surf,text_rect)
     
-    screen.blit(snail_surface,snail_rect)
+    if snail_rect.x <= 0: snail_rect.left = 800
     snail_rect.right -= 5
-    
+    screen.blit(snail_surf,snail_rect)
     screen.blit(player_surf,player_rect)
+    
+    #if player_rect.colliderect(snail_rect):
+    #    snail_rect.right = 0
+    
+    mouse_pos = pygame.mouse.get_pos()
+    if player_rect.collidepoint((mouse_pos)):
+        pygame.mouse.get_pressed()
     
     pygame.display.update()
     #set the framerate of the game
